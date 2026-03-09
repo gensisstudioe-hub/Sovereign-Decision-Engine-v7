@@ -123,4 +123,5 @@ if st.button("EXECUTE PROTOCOL 07"):
 
 st.markdown("---")
 
-st.caption("Eman El Shafie | Sovereign OS Architect | Eudaimonics Theory Founder") [cite: 2026-01-10, 2026-01-20]
+st.caption("Eman El Shafie | Sovereign OS Architect | Eudaimonics Theory Founder") 
+
