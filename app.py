@@ -2,117 +2,126 @@ import streamlit as st
 from openai import OpenAI
 import re
 
-# 1. إعدادات الواجهة السيادية (Sovereign UI v7 - Elite Edition)
+# 1. إعدادات الواجهة السيادية المحدثة (Sovereign UI v7)
 st.set_page_config(page_title="Sovereign Decision Engine v7", layout="wide")
 
 st.markdown("""
     <style>
-    /* التنسيق اللوني: الفحمي العميق والذهب الملكي */
-    .main { 
-        background-color: #050505; 
-        color: #ffffff; 
-        font-family: 'Inter', sans-serif; 
-    }
+    /* التنسيق اللوني: فحمي، ذهبي، أبيض */
+    .main { background-color: #0c0c0c; color: #ffffff; font-family: 'Segoe UI', sans-serif; }
     
-    /* الحاوية العلوية (The Grand Header) */
-    .header-container {
-        text-align: center;
-        padding: 40px;
-        background: linear-gradient(180deg, #111 0%, #050505 100%);
-        border-bottom: 1px solid #d4af37;
-        margin-bottom: 40px;
-    }
-
-    /* شعار المحرك (المحاكاة البصرية للصورة الاحترافية) */
-    .sovereign-logo-img {
-        width: 180px;
-        filter: drop-shadow(0px 0px 15px rgba(212, 175, 55, 0.5));
-        margin-bottom: 20px;
-    }
-
-    .title-text {
-        color: #d4af37;
-        font-size: 2.2rem;
-        font-weight: 800;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        margin-top: 10px;
-    }
-
-    /* صناديق المدخلات والتقارير */
-    .stTextArea textarea {
-        background-color: #0f0f0f !important;
-        color: #ffffff !important;
-        border: 1px solid #222 !important;
-        border-radius: 8px !important;
-    }
-
-    .report-box { 
-        border: 1px solid #d4af37;
-        background: rgba(26, 26, 26, 0.8);
-        padding: 40px;
-        border-radius: 4px;
-        box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-        line-height: 1.8;
-        font-size: 1.1rem;
-    }
-
-    /* الزر الحاسم */
-    .stButton>button { 
-        background: linear-gradient(90deg, #d4af37, #b8860b);
-        color: #000; 
-        border: none;
-        padding: 15px 30px;
-        font-weight: bold;
-        letter-spacing: 2px;
-        border-radius: 2px;
-        width: 100%;
-        transition: all 0.5s ease;
-    }
-    .stButton>button:hover {
-        background: #ffffff;
-        box-shadow: 0px 0px 30px rgba(212, 175, 55, 0.6);
-        transform: translateY(-2px);
-    }
-
-    /* الختم السفلي (The Signature Seal) */
-    .footer-seal {
+    /* شعار المحرك الاحترافي - محاكاة لهوية جيت هب السيادية */
+    .engine-seal {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 20px;
-        margin-top: 60px;
+        gap: 15px;
         padding: 20px;
-        border-top: 1px solid #1a1a1a;
+        background: linear-gradient(145deg, #1a1a1a, #0c0c0c);
+        border: 1px solid #d4af37;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+    }
+    .seal-icon { font-size: 50px; color: #d4af37; }
+    .seal-text { color: #d4af37; font-weight: bold; font-size: 1.5rem; letter-spacing: 2px; }
+
+    /* أزرار التنفيذ */
+    .stButton>button { 
+        background-color: #d4af37; color: #0c0c0c; 
+        border-radius: 4px; border: none; font-weight: bold; 
+        height: 3em; transition: 0.4s;
+    }
+    .stButton>button:hover {
+        background-color: #ffffff;
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    }
+
+    /* صندوق التقرير الحاسم */
+    .report-box { 
+        border: 1px solid #333;
+        border-left: 4px solid #d4af37;
+        padding: 25px; 
+        background-color: #111111; color: #f0f0f0; 
+        line-height: 1.6;
+    }
+    
+    .signature-area {
+        margin-top: 50px;
+        padding-top: 20px;
+        border-top: 1px solid #333;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #888;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# الهيدر الاحترافي (يجب استبدال الرابط أدناه برابط الصورة الدائم الخاص بكِ)
-st.markdown(f"""
-    <div class="header-container">
-        <img src="https://i.ibb.co/VYpX9p8/sovereign-logo.png" class="sovereign-logo-img">
-        <div class="title-text">Sovereign Decision Engine</div>
-        <p style="color: #666; letter-spacing: 2px;">Architectural Validation | v7.0</p>
+# هيدر المحرك (الختم السيادي الجديد)
+st.markdown("""
+    <div class="engine-seal">
+        <div class="seal-icon">⚙️🦋</div>
+        <div class="seal-text">SOVEREIGN ENGINE v7</div>
     </div>
     """, unsafe_allow_html=True)
 
-# المنطق البرمجي (Sovereign Logic)
-client = OpenAI(base_url="https://router.huggingface.co/v1", api_key=st.secrets.get("HF_TOKEN"))
+st.title("Architectural Validation | Protocol 07")
+
+# إعداد العميل
+client = OpenAI(
+    base_url="https://router.huggingface.co/v1",
+    api_key=st.secrets.get("HF_TOKEN")
+)
+
 STABLE_MODEL = "meta-llama/Llama-3.3-70B-Instruct"
 
-context = st.text_area("Strategic Context (Protocol 07):", height=200)
+# إدخال السياق الاستراتيجي
+strategic_context = st.text_area("Input Strategic Context:", 
+                                 placeholder="Enter expansion details or risk vectors...", 
+                                 height=150)
 
-if st.button("EXECUTE ARCHITECTURAL VERDICT"):
-    with st.spinner("Decoding Structural Fragility..."):
-        # (نفس منطق استخراج SR والتقرير الذي قمنا ببنائه سابقاً)
-        # ...
-        st.markdown('<div class="report-box">يتم هنا طباعة التقرير السيادي بصيغة "اليقين التشغيلي"...</div>', unsafe_allow_html=True)
+if st.button("EXECUTE SOVEREIGN ANALYSIS"):
+    if not strategic_context:
+        st.error("Protocol Error: Strategic Context missing.")
+    else:
+        with st.spinner("Analyzing Structural Gaps..."):
+            try:
+                # منطق استخراج الأرقام (IA, SRF, RE) بناءً على الورقة رقم 07
+                estimation_prompt = f"Analyze: '{strategic_context}'. Extract strictly: IA:val, SRF:val, RE:val."
+                est_res = client.chat.completions.create(
+                    model=STABLE_MODEL,
+                    messages=[{"role": "user", "content": estimation_prompt}]
+                )
+                
+                raw_val = est_res.choices[0].message.content
+                values = {k: float(v) for k, v in re.findall(r'(\w+)\s*[:=]\s*(\d+\.?\d*)', raw_val)}
+                
+                IA = values.get('IA', 5.0)
+                SRF = values.get('SRF', 1.0)
+                RE = values.get('RE', 3.0)
+                SR = (IA * SRF) / RE # معادلة الجاهزية السيادية
 
-# الختم النهائي
-st.markdown("""
-    <div class="footer-seal">
-        <img src="https://i.ibb.co/VYpX9p8/sovereign-logo.png" style="width: 50px; opacity: 0.6;">
-        <div style="color: #d4af37; font-weight: bold;">Eman El Shafie | Sovereign OS Architect</div>
+                # توليد التقرير النهائي
+                report_prompt = f"Context: {strategic_context}. SR: {SR:.2f}. Generate: Threat Vector, Risk Clause, Action Protocols, Exit Criteria. Tone: Decisive Simplicity."
+                final_res = client.chat.completions.create(
+                    model=STABLE_MODEL,
+                    messages=[{"role": "system", "content": "You are the Sovereign OS Architect."}, {"role": "user", "content": report_prompt}]
+                )
+
+                # عرض النتائج
+                st.markdown(f"### Sovereign Ratio: `{SR:.2f}`")
+                st.markdown(f'<div class="report-box">{final_res.choices[0].message.content}</div>', unsafe_allow_html=True)
+                
+                st.download_button("Download Report", final_res.choices[0].message.content, "Sovereign_Report.txt")
+
+            except Exception as e:
+                st.error(f"Integrity Error: {str(e)}")
+
+# التوقيع النهائي مع الختم المطلوب (الفراشة والترس)
+st.markdown(f"""
+    <div class="signature-area">
+        <div>Eman El Shafie | Eudaimonics Theory Founder</div>
+        <div style="font-size: 24px;">🦋⚙️</div>
     </div>
     """, unsafe_allow_html=True)
