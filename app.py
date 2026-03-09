@@ -80,8 +80,7 @@ if st.button("EXECUTE PROTOCOL 07"):
                 RE = values.get('RE', 3.0)
                 
                 # حساب النسبة السيادية (The Sovereign Ratio)
-                SR = (IA * SRF) / RE [cite: 2026-01-22]
-
+                SR = (IA * SRF) / RE 
                 # المرحلة 2: صياغة التقرير بـ "بساطة حاسمة" (Decisive Simplicity)
                 report_prompt = f"""
                 Context: {strategic_context}
@@ -123,4 +122,5 @@ if st.button("EXECUTE PROTOCOL 07"):
                 st.error(f"Structural Integrity Compromised: {str(e)}")
 
 st.markdown("---")
+
 st.caption("Eman El Shafie | Sovereign OS Architect | Eudaimonics Theory Founder") [cite: 2026-01-10, 2026-01-20]
