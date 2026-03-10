@@ -1,65 +1,69 @@
 import streamlit as st
 from openai import OpenAI
 import re
+import os
+import base64
 
-# 1. إعدادات الواجهة السيادية (Sovereign UI v7.0 - Elite)
+# 1. إعدادات الواجهة السيادية (Sovereign UI v7.0)
 st.set_page_config(page_title="Sovereign OS | Protocol 07", layout="wide")
+
+# دالة تحويل الصورة لليقين البصري (Base64) لضمان الاستقرار التشغيلي
+def get_base64_image(image_path):
+    try:
+        with open(image_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode()
+    except Exception:
+        return None
 
 st.markdown("""
     <style>
     .main { background-color: #0c0c0c; color: #d4af37; font-family: 'Segoe UI', sans-serif; }
     
-    /* شعار المحرك الاحترافي - الفراشة والترس */
-    .sovereign-header {
-        text-align: center;
-        padding: 20px;
-        background: linear-gradient(180deg, #1a1a1a 0%, #0c0c0c 100%);
-        border-bottom: 1px solid #d4af37;
-        margin-bottom: 30px;
-    }
+    /* أيقونة الزيتا - رمز الجدارة الرياضية والمعادلة */
     .sovereign-logo {
-        font-size: 60px;
-        filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
-        margin-bottom: 10px;
+        width: 80px; height: 80px; border: 2px solid #d4af37;
+        margin-bottom: 20px; display: flex; align-items: center;
+        justify-content: center; font-weight: bold; font-size: 32px;
+        color: #d4af37; background: linear-gradient(45deg, #1a1a1a, #0c0c0c);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
     }
     
     .stButton>button { 
         background-color: #d4af37; color: #0c0c0c; 
         border-radius: 0px; border: none; font-weight: bold; width: 100%; 
-        transition: 0.3s; letter-spacing: 2px;
+        transition: 0.3s;
     }
     .stButton>button:hover {
         background-color: #ffffff; color: #0c0c0c;
-        box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
     }
     .report-box { 
-        border-left: 5px solid #d4af37; padding: 35px; 
-        background-color: #111; color: #ffffff; 
-        line-height: 1.8; font-family: 'Inter', sans-serif;
-        box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        border-left: 5px solid #d4af37; padding: 30px; 
+        background-color: #1a1a1a; color: #ffffff; 
+        line-height: 1.8; font-family: 'Courier New', Courier, monospace;
     }
-    .metric-value { font-size: 3rem; font-weight: bold; color: #d4af37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
-    h1, h2, h3 { color: #d4af37 !important; text-transform: uppercase; letter-spacing: 3px; }
+    .metric-value { font-size: 2.5rem; font-weight: bold; color: #d4af37; }
+    h1, h2, h3 { color: #d4af37 !important; }
     .stTextArea textarea { background-color: #1a1a1a; color: #ffffff; border: 1px solid #333; }
     
     .signature-seal {
         display: flex; align-items: center; justify-content: flex-end;
-        gap: 15px; margin-top: 60px; color: #d4af37; font-size: 1rem;
+        gap: 15px; margin-top: 50px; color: #d4af37; font-size: 0.95rem;
         border-top: 1px solid #1a1a1a; padding-top: 20px;
+    }
+    .sovereign-icon-img {
+        filter: drop-shadow(0 0 5px #d4af37);
+        border-radius: 4px;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# الهيدر السيادي الجديد (🦋⚙️)
-st.markdown("""
-    <div class="sovereign-header">
-        <div class="sovereign-logo">🦋⚙️</div>
-        <h1 style="margin:0;">Sovereign Engine v7</h1>
-        <p style="color:#888; letter-spacing:5px;">ARCHITECTURAL VALIDATION SYSTEM</p>
-    </div>
-    """, unsafe_allow_html=True)
+# استعادة الهيبة الرياضية بالزيتا (Σ)
+st.markdown('<div class="sovereign-logo">Σ</div>', unsafe_allow_html=True)
+st.title("Sovereign Engine | v7.0")
+st.subheader("Architectural Validation & Decision Logic")
 
-# إعداد العميل
+# إعداد العميل (Hugging Face / OpenAI)
 client = OpenAI(
     base_url="https://router.huggingface.co/v1",
     api_key=st.secrets.get("HF_TOKEN")
@@ -67,19 +71,18 @@ client = OpenAI(
 
 STABLE_MODEL = "meta-llama/Llama-3.3-70B-Instruct"
 
-# المدخلات الاستراتيجية
 strategic_context = st.text_area("Input Strategic Context (Expansion, Risk, or Asset):", 
-                                 placeholder="Define the structural gap or invisible asset to be validated...",
+                                 placeholder="e.g., 40% Factory Expansion in Dubai...",
                                  height=150)
 
-if st.button("EXECUTE SOVEREIGN VERDICT"):
+if st.button("CALCULATE SOVEREIGN CERTAINTY"):
     if not strategic_context:
-        st.error("Protocol Error: Strategic Context is required to bridge structural gaps.")
+        st.error("Protocol Error: Strategic Context is required.")
     else:
-        with st.spinner("Decoding Invisible Assets & Calculating Sovereign Certainty..."):
+        with st.spinner("Decoding Structural Failures..."):
             try:
-                # المرحلة 1: استخراج القيم الرقمية
-                estimation_prompt = f"Analyze: '{strategic_context}'. Return strictly as: IA:value, SRF:value, RE:value. (Scale 1-10)"
+                # المرحلة 1: استخراج القيم بناءً على الورقة رقم 07
+                estimation_prompt = f"Analyze: '{strategic_context}'. Return strictly as: IA:value, SRF:value, RE:value. (Values 1-10)"
                 
                 est_response = client.chat.completions.create(
                     model=STABLE_MODEL,
@@ -94,58 +97,63 @@ if st.button("EXECUTE SOVEREIGN VERDICT"):
                 SRF = values.get('SRF', 1.0)
                 RE = values.get('RE', 3.0)
                 
-                # معادلة السيادة
+                # تطبيق معادلة الجاهزية السيادية: SR = (IA * SRF) / RE
                 SR = (IA * SRF) / RE
 
-                # المرحلة 2: توليد التقرير المعماري
-                report_prompt = f"""
-                Context: {strategic_context}
-                Sovereign Ratio (SR): {SR:.2f}
-                Task: Generate a 'Sovereign Certainty Report'. 
-                Sections: 
-                1. Structural Gap Analysis (Identify the fragile nodes).
-                2. Invisible Asset Activation (Unlocking hidden wings).
-                3. Risk Mitigation Protocols (Technical protective steps).
-                4. Sovereign Verdict (Final Architectural Decision).
-                Tone: Decisive Simplicity, Elite, Non-Therapeutic.
-                """
+                # المرحلة 2: توليد التقرير الحاسم بلغة "البساطة الحاسمة"
+                report_prompt = f"Context: {strategic_context}. SR: {SR:.2f}. Generate: Threat Vector, Risk Clause, Action Protocols, Exit Criteria."
                 
                 final_report = client.chat.completions.create(
                     model=STABLE_MODEL,
-                    messages=[{"role": "system", "content": "You are the Architect of Sovereign OS. Convert failures into protective protocols."},
+                    messages=[{"role": "system", "content": "Architect of Sovereign OS. Minimalist tone."},
                               {"role": "user", "content": report_prompt}]
                 )
 
                 content = final_report.choices[0].message.content
 
-                # عرض النتائج النهائية
                 st.markdown("---")
-                col1, col2 = st.columns([1, 2])
+                col1, col2 = st.columns([1, 3])
                 with col1:
                     st.markdown("### Sovereign Ratio")
                     st.markdown(f'<p class="metric-value">{SR:.2f}</p>', unsafe_allow_html=True)
                     if SR >= 1.5:
-                        st.success("STATUS: SOVEREIGN (GO)")
+                        st.success("STATUS: SOVEREIGN")
                     else:
-                        st.warning("STATUS: FRAGILE (NO-GO)")
+                        st.warning("STATUS: FRAGILE")
 
                 with col2:
                     st.markdown(f'<div class="report-box">{content}</div>', unsafe_allow_html=True)
                 
-                st.download_button(
-                    label="DOWNLOAD ARCHITECTURAL VERDICT (PDF/TXT)",
-                    data=content,
-                    file_name="Sovereign_OS_Verdict.txt",
-                    mime="text/plain"
-                )
+                st.download_button(label="DOWNLOAD ARCHITECTURAL VERDICT", data=content, file_name="Sovereign_OS_Report.txt")
                 
             except Exception as e:
-                st.error(f"Integrity Compromised: {str(e)}")
+                st.error(f"Structural Integrity Compromised: {str(e)}")
 
-# التوقيع الختامي (الختم السيادي)
-st.markdown(f"""
-    <div class="signature-seal">
-        <span>Eman El Shafie | Sovereign OS Architect | Eudaimonics Theory Founder</span>
-        <span style="font-size: 30px; filter: drop-shadow(0 0 5px #d4af37);">🦋⚙️</span>
-    </div>
-    """, unsafe_allow_html=True)
+# التوقيع النهائي المدعوم بـ "اليقين البصري"
+st.markdown("---")
+icon_path = "sovereign_icon.png"
+img_base64 = get_base64_image(icon_path)
+
+if img_base64:
+    st.markdown(f"""
+        <div class="signature-seal">
+            <div style="text-align: right;">
+                <span style="display: block; font-weight: bold;">Eman El Shafie</span>
+                <span style="display: block; font-size: 0.8rem; opacity: 0.8;">Founder & Sovereign OS Architect</span>
+                <span style="display: block; font-size: 0.8rem; opacity: 0.8;">Genesis Logic Lab</span>
+            </div>
+            <img src="data:image/png;base64,{img_base64}" class="sovereign-icon-img" width="50">
+        </div>
+        """, unsafe_allow_html=True)
+else:
+    # حل احتياطي في حال عدم العثور على الصورة (Fallback)
+    st.markdown(f"""
+        <div class="signature-seal">
+            <div style="text-align: right;">
+                <span style="display: block; font-weight: bold;">Eman El Shafie</span>
+                <span style="display: block; font-size: 0.8rem; opacity: 0.8;">Founder & Sovereign OS Architect</span>
+                <span style="display: block; font-size: 0.8rem; opacity: 0.8;">Genesis Logic Lab</span>
+            </div>
+            <span style="font-size: 30px; filter: drop-shadow(0 0 5px #d4af37);">⚙️🦋</span>
+        </div>
+        """, unsafe_allow_html=True)
